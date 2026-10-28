@@ -15,4 +15,29 @@ cmake:对make 工具的生成器，简化编译过程，可以管理大型的项
 - ./demo //运行demo这个可执行程序
 ### 以上四步，是g++ main.cpp -o demo 的拆分
 ### 对于有多个源代码文件，可以用g++ main.cpp add.cpp -o demo来将二者链接在demo这一个可执行文件里，比如说可以使得在main.cpp里面定义的函数可以运用到add.cpp里面
-- 增量链接：此时如果修改其中一个cpp文件比如修改了add.cpp，那么就可以只对add.cpp进行再一次汇编，g++ -c 
+- 增量链接：此时如果修改其中一个cpp文件比如修改了add.cpp，那么就可以只对add.cpp进行再一次汇编，g++ -c
+## Makefile
+-  file：一份自动编译的说明书，告诉make工具，哪些文件要编译，编译顺序是什么，需要哪些命令，实现程序构建的自动化
+- 操作：vim一个makefile，把上面提及到流程所需要的代码打包放进去，然后运行makefile就好了
+```makefile
+demo: add.o main.o
+        g++ add.o main.o -o demo
+add.o: add.cpp
+        g++ -c add.cpp -o add.o
+main.o: main.cpp
+        g++ -c main.cpp -o main.o
+clean:
+        rm -rf *.o demo /*把带有.o后缀的文件和demo删掉*/
+```
+(有点像函数的作用，作为一个封装）
+## Cmake
+- 过程式语言，是一个跨平台(在linux生成makefile，在windows生成project) 的编译工具，可以产生标准的建构档makefile或者project
+- 一定要将该文件命名为CMakeLists.txt
+- 然后执行 cmake . （.：在当前目录执行该程序）
+- 出现makefile后可以像之前一样执行 make ...
+```cmake
+cmake_minimum_required(VERSION 3.16) /*最低版本号*/
+project(add_demo) /*定义了项目的名称*/
+add_executable(demo main.cpp add.cpp) /*添加可执行程序，后面还要加如头文件之类的的话直接加在这个后面就好*/
+```
+
