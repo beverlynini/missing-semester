@@ -35,9 +35,23 @@ clean:
 - 一定要将该文件命名为CMakeLists.txt
 - 然后执行 cmake . （.：在当前目录执行该程序）
 - 出现makefile后可以像之前一样执行 make ...
+### 使用1：最基础
 ```cmake
 cmake_minimum_required(VERSION 3.16) /*最低版本号*/
 project(add_demo) /*定义了项目的名称*/
 add_executable(demo main.cpp add.cpp) /*添加可执行程序，后面还要加如头文件之类的的话直接加在这个后面就好*/
 ```
+### 使用2：自动扫描
+```
+cmake_minimum_required((VERSION 3.16) 
+project(add_demo) 
+add_executable(demo 
+    src/main.cpp
+    src/add.cpp
+)
 
+/*目标头文件目录*/
+taget_include_directories(demo PRIVATE
+include)
+/*在include文件夹里面寻找执行demo项目的所有头文件*/
+```
